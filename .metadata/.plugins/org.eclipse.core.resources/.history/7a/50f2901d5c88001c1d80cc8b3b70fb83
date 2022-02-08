@@ -1,0 +1,38 @@
+package db;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Properties;
+
+public class DB {
+	
+	private static Connection conn = null;
+	
+	private static Connection getConnection() {
+		if (conn == null) {
+			try {
+				Properties props = loadProperties();
+				String url = props.getProperty("dburl");
+				conn = DriverManager.getConnection(url, props);
+			}
+			catch (SQL Exception e) {
+				throw new DbException(e.getMessage());
+			}
+			}
+		return conn;
+	}
+	
+	private static Properties loadProperties() {
+		try(FileInputStream _fs =  new FileInputStream("cb.properties")) {
+			Properties props = new Properties();
+			props.load(fs);
+			return props;
+		}
+		catch (IOException e) {
+		throw new DbException(e.getMessage());
+		}
+	}
+
+}
